@@ -12,3 +12,7 @@ geckodriver.log
 
 #etc
 .idea/
+
+
+#tests
+tests/test_home_page.py

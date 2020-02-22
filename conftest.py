@@ -34,29 +34,32 @@ def browser(request):
     headless = request.config.getoption("--headless")
 
     if browser == "Chrome":
+        options = webdriver.ChromeOptions()
+        options.add_argument("--ignore-certificate-errors")
+
         if headless == False:
-            driver = webdriver.Chrome()
-            driver.maximize_window()
+            driver = webdriver.Chrome(options=options)
+
         else:
-            options = webdriver.ChromeOptions()
             options.add_argument("--headless")
             driver = webdriver.Chrome(options=options)
-            driver.maximize_window()
+
 
     elif browser == "Firefox":
+        options = webdriver.FirefoxOptions()
+        options.add_argument("--ignore-certificate-errors")
 
         if headless == False:
-            driver = webdriver.Firefox()
-            driver.maximize_window()
+            driver = webdriver.Firefox(options=options)
         else:
             options = webdriver.FirefoxOptions()
             options.add_argument("--headless")
             driver = webdriver.Firefox(options=options)
-            driver.maximize_window()
 
     elif browser == "Safari":
         driver = webdriver.Safari()
-        driver.maximize_window()
 
     request.addfinalizer(driver.quit)
+
+    driver.maximize_window()
     return driver
