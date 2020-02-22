@@ -14,5 +14,3 @@ geckodriver.log
 .idea/
 
 
-#tests
-tests/test_home_page.py
