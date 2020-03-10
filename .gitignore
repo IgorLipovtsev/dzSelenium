@@ -13,6 +13,6 @@ geckodriver.log
 #etc
 .idea/
 
-password
+./password
 
-tests/test_wait.py
+**/tests/test_wait.py
