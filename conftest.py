@@ -8,7 +8,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--url",
         action="store",
-        default="http://192.168.64.2",
+        default="http://192.168.64.2/admin/",
         help="this is request url",
     )
     parser.addoption(
@@ -16,6 +16,9 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--headless", action="store", default=False, help="headless mode for browser"
+    )
+    parser.addoption(
+        "--wait", action="store", type="int", default=10, help="implicitly wait value for driver"
     )
 
 
@@ -32,6 +35,7 @@ def browser(request):
 
     browser = request.config.getoption("--browser")
     headless = request.config.getoption("--headless")
+    implicitly_wait_value = request.config.getoption("--wait")
 
     if browser == "Chrome":
         options = webdriver.ChromeOptions()
@@ -62,4 +66,6 @@ def browser(request):
     request.addfinalizer(driver.quit)
 
     driver.maximize_window()
+    driver.implicitly_wait(implicitly_wait_value)
+
     return driver
