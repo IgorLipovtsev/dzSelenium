@@ -21,7 +21,7 @@ def password():
 
 @pytest.fixture()
 def add_new_product(browser, url_setup, password):
-    """добавляем новйы продукт """
+    """добавляем новый продукт """
 
     wait = WebDriverWait(browser, 10)
     browser.get(url_setup)
@@ -38,7 +38,20 @@ def add_new_product(browser, url_setup, password):
     name_of_new_product = "Iphone 11 Super Pro Max XXL"
     browser.find_element(*AdminTool.product_name).send_keys(f"{name_of_new_product}")
     browser.find_element(*AdminTool.meta_tag_title).send_keys("super iphone")
-    browser.find_element(*AdminTool.save_product).click()
+    browser.find_element(*AdminTool.image).click()
+    browser.find_element(*AdminTool.default_image).click()
+
+    wait.until(EC.presence_of_element_located(AdminTool.image_manager)).click()
+    wait.until(EC.presence_of_element_located(AdminTool.image_upload))
+    browser.execute_script("$('#button-upload').click();")
+    file = browser.find_element(*AdminTool.file_upload)
+    file.send_keys('/Users/lipa_/Desktop/Spider.jpg')
+    wait.until(EC.alert_is_present())
+    alert = browser.switch_to.alert
+    alert.accept()
+    wait.until(EC.presence_of_element_located(AdminTool.image_upload))
+    wait.until(EC.presence_of_element_located(AdminTool.new_avatar)).click()
+    wait.until(EC.presence_of_element_located(AdminTool.save_product)).click()
 
     return name_of_new_product
 
