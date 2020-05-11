@@ -8,7 +8,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--url",
         action="store",
-        default="http://192.168.64.2/admin/",
+        default="http://192.168.64.2/",
         help="this is request url",
     )
     parser.addoption(
