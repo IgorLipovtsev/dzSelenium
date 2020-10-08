@@ -1,6 +1,3 @@
-from locators import Alert
-
-
 class Alert:
     pass
     # def __init__(self, driver):

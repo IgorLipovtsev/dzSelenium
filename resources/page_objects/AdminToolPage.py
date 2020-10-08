@@ -1,11 +1,15 @@
-from locators import AdminTool
-from .BasePage import BasePage
+from resources.locators import AdminTool
+from resources.page_objects.common import BasePage
 from selenium.webdriver.common.alert import Alert
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 
 
 class AdminToolPage(BasePage):
+    LOGGER_NAME = 'AdminToolPage'
+
+    def __init__(self, driver):
+        super().__init__(driver, logger_name=AdminToolPage.LOGGER_NAME)
 
     def open_catalog(self):
         self._wait_for_visible(AdminTool.catalog)
@@ -24,11 +28,13 @@ class AdminToolPage(BasePage):
     def add_new_product(self):
         self._wait_for_visible(AdminTool.add_new_product)
         self._click(AdminTool.add_new_product)
+        self.logger.info(f'new product was successfully added!')
         return self
 
     def edit_product(self):
         self._wait_for_visible(AdminTool.add_new_product)
         self._click(AdminTool.add_new_product)
+        self.logger.info(f'new product was successfully edited!')
         return self
 
     # product creation options
@@ -42,12 +48,14 @@ class AdminToolPage(BasePage):
         self._wait_for_visible(AdminTool.description)
         self._click(AdminTool.description)
         self._input(AdminTool.description, description)
+        self.logger.info(f'description was successfully changed!')
         return self
 
     def set_name_of_product(self, name_of_product):
         self._wait_for_visible(AdminTool.general)
         self._click(AdminTool.general)
         self._input(AdminTool.product_name, name_of_product)
+        self.logger.info(f'name of product was successfully changed!')
         return self
 
     def delete_newly_added_product(self, newly_added_product):
@@ -64,6 +72,7 @@ class AdminToolPage(BasePage):
         self._wait_for_visible(AdminTool.delete_product)
         self._click(AdminTool.delete_product)
         Alert(self.driver).accept()
+        self.logger.info(f'{newly_added_product} was successfully deleted!')
         return self
 
     def update_newly_added_product(self, add_new_product):
@@ -72,6 +81,7 @@ class AdminToolPage(BasePage):
 
         self._wait_for_visible(newly_added_element)
         self._click(newly_added_element)
+        self.logger.info(f'{add_new_product} was successfully updated!')
         return self
 
     def set_meta_tag_of_product(self, meta_tag):
@@ -102,12 +112,14 @@ class AdminToolPage(BasePage):
         # alert = self.driver.switch_to.alert
         # alert.accept()
 
-        self._wait_for_visible(AdminTool.image_upload)
-        self._wait_for_visible(AdminTool.new_avatar)
+        # self._wait_for_visible(AdminTool.image_upload)
+        # self._wait_for_visible(AdminTool.new_avatar)
         self._click(AdminTool.new_avatar)
+        self.logger.info(f'Avatar was successfully added!')
         return self
 
     def save_product(self):
         self._wait_for_visible(AdminTool.save_product)
         self._click(AdminTool.save_product)
+        self.logger.info(f'Product was successfully saved!')
         return self

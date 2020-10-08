@@ -22,3 +22,6 @@ password/*/*.*
 **/tests/test_wait.py
 **/tests/test_home_page.py
 **/tests/opencart_url.py
+
+logs/
+tests/logs/

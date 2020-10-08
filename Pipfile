@@ -9,7 +9,7 @@ verify_ssl = true
 pytest = "*"
 requests = "*"
 selenium = "*"
-black = "*"
+logger = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
