@@ -1,5 +1,6 @@
 import pytest
-from selenium import webdriver
+import logging
+from fixtures.browser import Browser
 
 
 def pytest_addoption(parser):
@@ -11,14 +12,12 @@ def pytest_addoption(parser):
         default="http://192.168.64.2/",
         help="this is request url",
     )
-    parser.addoption(
-        "--browser", action="store", default="Chrome", help="this is browser"
-    )
+    parser.addoption("--browser", action="store", default="chrome", help="This is request browser", required=False)
+    parser.addoption("--implicitly_wait", action="store", default="10", help="waiting time in the seconds",
+                     required=False)
+    parser.addoption("--file", action='store', default=None, help='file with log report')
     parser.addoption(
         "--headless", action="store", default=False, help="headless mode for browser"
-    )
-    parser.addoption(
-        "--wait", action="store", type="int", default=10, help="implicitly wait value for driver"
     )
 
 
@@ -30,42 +29,16 @@ def url_setup(request):
 
 
 @pytest.fixture()
-def browser(request):
-    """настройка браузера"""
+def driver(request):
+    """Фикстура запуска различных браузеров"""
+    active_browser = request.config.getoption("--browser")
+    wait = request.config.getoption("--implicitly_wait")
+    filename = request.config.getoption('--file')
 
-    browser = request.config.getoption("--browser")
-    headless = request.config.getoption("--headless")
-    implicitly_wait_value = request.config.getoption("--wait")
+    active_browser = Browser(browser=active_browser, wait=wait)
+    logging.basicConfig(level=logging.INFO, filename=filename)
+    active_browser.browser_log.info(f'{active_browser} is starting!')
 
-    if browser == "Chrome":
-        options = webdriver.ChromeOptions()
-        options.add_argument("--ignore-certificate-errors")
-
-        if headless == False:
-            driver = webdriver.Chrome(options=options)
-
-        else:
-            options.add_argument("--headless")
-            driver = webdriver.Chrome(options=options)
-
-
-    elif browser == "Firefox":
-        options = webdriver.FirefoxOptions()
-        options.add_argument("--ignore-certificate-errors")
-
-        if headless == False:
-            driver = webdriver.Firefox(options=options)
-        else:
-            options = webdriver.FirefoxOptions()
-            options.add_argument("--headless")
-            driver = webdriver.Firefox(options=options)
-
-    elif browser == "Safari":
-        driver = webdriver.Safari()
-
-    request.addfinalizer(driver.quit)
-
-    driver.maximize_window()
-    driver.implicitly_wait(implicitly_wait_value)
-
-    return driver
+    yield active_browser.driver
+    active_browser.driver.quit()
+    active_browser.browser_log.info(f'{active_browser} is stopping!')
