@@ -23,5 +23,12 @@ password/*/*.*
 **/tests/test_home_page.py
 **/tests/opencart_url.py
 
+#screenshots
+screenshots/*.*
+
+#logs
 logs/
 tests/logs/
+
+#allure
+allure-report/
